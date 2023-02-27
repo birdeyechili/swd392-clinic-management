@@ -11,7 +11,7 @@
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <c:set var="student" value="student"/>
-                <c:if test = "${sessionScope.useraccount.roleId != student&&sessionScope.useraccount != null}">
+                <c:if test = "${sessionScope.useraccount != null}">
                     <li class="nav-item">
                         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                     </li>
@@ -19,24 +19,6 @@
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="home" class="nav-link">Home</a>
                 </li>
-                <c:if test = "${sessionScope.useraccount != null}">
-                    <c:set var="student" value="student"/>
-                    <c:if test = "${sessionScope.useraccount.roleId == student}">
-                        <li class="nav-item dropdown">
-                            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle"> Dashboard </a>
-
-                            <!--student-->
-                            <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow" style="left: 0px; right: inherit;">
-                                <li><a href="featurelist" class="dropdown-item"> Feature List </a></li>
-                                <li><a href="issue" class="dropdown-item"> Issue </a></li>
-                                <li><a href="teameval" class="dropdown-item"> Team Evaluation </a></li>
-                                <li><a href="usereval" class="dropdown-item"> User Evaluation </a></li>
-                            </ul>
-                    </c:if>    
-                    <!--student-->
-
-                    </li>
-                </c:if>
             </ul>
 
             <c:if test = "${sessionScope.useraccount == null}">
@@ -79,7 +61,6 @@
                     </li>
                 </ul>
             </c:if>
-
 
 
         </div> 
