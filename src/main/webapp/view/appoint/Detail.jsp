@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -36,53 +37,57 @@
                     <div class="card card-primary">
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form action="userlist?tag=update" method="post" id="form">
+                        <span style="color: red">${error}</span>
+                        <form action="appointment?tag=update" method="post" id="form">
                             <div class="card-body">
                                 <div class="row">
-                                    <input name="id" value="${user.userId}" name="settingId" hidden/>
-                                    <div class="form-group col-md-4"\>
+                                    <input name="id" value="${appointment.appointId}" name="id" hidden/>
+                                    <div class="form-group col-md-4" \>
                                         <label>Patient</label>
-                                        <input type="text" class="form-control" id="name"
-                                               title="Name must be contains a-z" value="${user.fullName}" name="name"
+                                        <input type="text" class="form-control" id="patient"
+                                               title="Name must be contains a-z" value="${appointment.patientName}"
+                                               name="patient"
                                                style="background: white;" readonly/>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label>Doctor</label>
-                                        <select class="form-control selectpicker" id="roleId" name="roleId"
+                                        <select class="form-control selectpicker" id="roleId" name="doctor"
                                                 style="width: 100%; margin-left: 0px">
-                                            <c:forEach items="${listDoctor}" var="s" begin="0" varStatus="i" >
-                                                <option value="${i.count}" >${s}</option>
+                                            <c:forEach items="${doctorList}" var="s" begin="0" varStatus="i">
+                                                <option value="${s.userId}" ${s.fullName == appointment.doctorName ? "selected":""}>
+                                                        ${s.fullName} - ${s.position} </option>
                                             </c:forEach>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <input name="id" value="${user.userId}" hidden/>
                                     <div class="form-group col-md-4">
                                         <label>Time</label>
                                         <input class="form-control" id="time"
-                                               title="Age must >0" type="text"
-                                               value="${user.age}" name="age" style="background: white;"/>
+                                               title="Age must >0" type="text" placeholder="HH:mm dd-MM-yyyy"
+                                               value="<fmt:formatDate value="${appointment.time}" pattern="HH:mm dd-MM-yyyy" />"
+                                               name="time" style="background: white;"/>
                                     </div>
                                 </div>
 
                                 <div class="row">
-                                        <div class="form-group col-md-4">
-                                            <label>Note</label>
-                                            <input class="form-control" id="note"
-                                                   title="Age must >0" type="text"
-                                                   value="${user.age}" name="age" style="background: white;"/>
-                                        </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Note</label>
+                                        <textarea class="form-control" id="note"
+                                                  title="Age must >0" type="text"
+                                                  name="note" style="background: white;">${appointment.note}</textarea>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-md-8 ">
-                                        <label >Status</label> <br/>
-                                        <select class="form-control selectpicker col-3" name="search_status"
-                                                onchange="this.form.submit()" style="height: 40px;margin-right: 3px;">
-                                            <jsp:useBean id="c" class="com.example.swd392_clinic_management.util.Config"/>
+                                        <label>Status</label> <br/>
+                                        <select class="form-control selectpicker col-2" name="status"
+                                                style="height: 40px;margin-right: 3px;">
+                                            <jsp:useBean id="c"
+                                                         class="com.example.swd392_clinic_management.util.Config"/>
                                             <c:set var="listStatus" value="${c.listAppointStatus}"/>
                                             <c:forEach items="${listStatus}" var="s" begin="0" varStatus="i">
-                                                <option value="${i.count}">${s}</option>
+                                                <option value="${i.count - 1}" ${appointment.status == i.count - 1 ? "selected":""}>${s}</option>
                                             </c:forEach>
                                         </select>
                                         &nbsp;&nbsp;
