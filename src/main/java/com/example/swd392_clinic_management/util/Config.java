@@ -5,9 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,6 +13,6 @@ import java.util.List;
 public class Config {
 
     private String [] listRole = {"admin", "patient", "doctor"};
-    private String [] listAppointStatus = {"process", "accept", "deny", "finish"};
+    private String [] listAppointStatus = {"accept", "process", "deny", "finish"};
 
 }
