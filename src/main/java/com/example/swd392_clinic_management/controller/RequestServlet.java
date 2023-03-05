@@ -2,10 +2,8 @@ package com.example.swd392_clinic_management.controller;
 
 import com.example.swd392_clinic_management.dal.AppointmentDAO;
 import com.example.swd392_clinic_management.dal.UserDAO;
-import com.example.swd392_clinic_management.DTO.AppointmentDTO;
 import com.example.swd392_clinic_management.model.Appointment;
 import com.example.swd392_clinic_management.model.User;
-import com.example.swd392_clinic_management.util.PaginationUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -44,7 +42,7 @@ public class RequestServlet extends HttpServlet {
         List<User> doctorList = userDAO.searchUser("", 2);
         request.setAttribute("doctorList", doctorList);
 
-        request.getRequestDispatcher("view/appoint/Request.jsp").forward(request, response);
+        request.getRequestDispatcher("view/appoint/RequestAppoint.jsp").forward(request, response);
     }
 
     @Override
@@ -67,7 +65,7 @@ public class RequestServlet extends HttpServlet {
             request.setAttribute("error", "Please input in right format!");
             List<User> doctorList = userDAO.searchUser("", 2);
             request.setAttribute("doctorList", doctorList);
-            request.getRequestDispatcher("view/appoint/Request.jsp").forward(request, response);
+            request.getRequestDispatcher("view/appoint/RequestAppoint.jsp").forward(request, response);
             return;
         }
         Appointment appointment = Appointment.builder()

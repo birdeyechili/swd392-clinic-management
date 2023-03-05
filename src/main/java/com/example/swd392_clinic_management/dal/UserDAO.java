@@ -16,7 +16,7 @@ public class UserDAO extends DBUtil {
     ResultSet rs;
     Connection connection = getConnection();
 
-    public List<User> getAllUsers() {
+    public List<User> getUserList() {
         List<User> list = new ArrayList<>();
         String query = "select * from Users order by [Role]";
         try {
@@ -71,7 +71,7 @@ public class UserDAO extends DBUtil {
         }
     }
 
-    public void updateUser(User user) {
+    public boolean updateUserDetail(User user) {
         String sql = "update Users set account=?, password=?, fullname=?, age=?, email=?, role=?, position=?, status=? where userid=?";
 
         try {
@@ -87,9 +87,11 @@ public class UserDAO extends DBUtil {
             ps.setInt(9, user.getUserId());
 
             ps.executeUpdate();
+            return true;
 
         } catch (SQLException e) {
             System.out.println(e);
+            return false;
         }
     }
 
@@ -125,7 +127,7 @@ public class UserDAO extends DBUtil {
         return true;
     }
 
-    public User getUserById(int id) {
+    public User getUserDetail(int id) {
         User user = null;
         String query = "select * from Users where userid=?";
         try {

@@ -48,7 +48,7 @@ public class UserServlet extends HttpServlet {
         UserDAO dao = new UserDAO();
         if (tag != null && tag.equals("update")){
             String id = request.getParameter("id");
-            User user = dao.getUserById(Integer.parseInt(id));
+            User user = dao.getUserDetail(Integer.parseInt(id));
             request.setAttribute("user", user);
             request.getRequestDispatcher("view/user/UserDetail.jsp").forward(request, response);
             return;
@@ -69,7 +69,7 @@ public class UserServlet extends HttpServlet {
             else request.setAttribute("searchName", searchName);
             list = dao.searchUser(searchName, role);
         } else {
-            list = dao.getAllUsers();
+            list = dao.getUserList();
         }
 
         String rawPageNumber = request.getParameter("curPage");
@@ -154,7 +154,7 @@ public class UserServlet extends HttpServlet {
                     .status(status)
                     .build();
 
-            dao.updateUser(user);
+            dao.updateUserDetail(user);
             response.sendRedirect("userlist");
         }
     }
