@@ -93,7 +93,7 @@ public class UserDAO extends DBUtil {
         }
     }
 
-    public boolean emailExisted(int userId, String email){
+    public boolean emailExisted(int userId, String email) {
         String sql = "select * from Users where email=?";
         if (userId != -1) sql = sql.concat(" and userid!=" + Integer.toString(userId));
 
@@ -109,7 +109,7 @@ public class UserDAO extends DBUtil {
         return true;
     }
 
-    public boolean accountExisted(int userId, String account){
+    public boolean accountExisted(int userId, String account) {
         String sql = "select * from Users where account=?";
         if (userId != -1) sql = sql.concat(" and userid!=" + Integer.toString(userId));
 
@@ -176,5 +176,32 @@ public class UserDAO extends DBUtil {
             System.out.println(e);
         }
         return list;
+    }
+
+    public User login(String account, String password) {
+        User user = null;
+        String query = "select * from Users where account = ? AND password = ?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, account);
+            ps.setString(2, password);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                user = new User(
+                        rs.getInt("userid"),
+                        rs.getString("account"),
+                        rs.getString("password"),
+                        rs.getString("fullname"),
+                        rs.getInt("age"),
+                        rs.getString("email"),
+                        rs.getInt("role"),
+                        rs.getString("position"),
+                        rs.getBoolean("status")
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return user;
     }
 }

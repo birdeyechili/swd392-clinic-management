@@ -24,7 +24,8 @@
             <c:if test = "${sessionScope.useraccount == null}">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item" style="padding-right: 10px;">
-                        <a href="login" ><button type="button" class="btn btn-block btn-light" >Login</button></a>
+<%--                        <a href="login" ><button type="button" class="btn btn-block btn-light" >Login</button></a>--%>
+                        <a href="authentication" ><button type="button" class="btn btn-block btn-light" >Login</button></a>
                     </li>
                     <li class="nav-item">
                         <a href="registration"><button type="button" class="btn btn-block btn-light" >Registration</button></a>
@@ -55,7 +56,7 @@
                             </a>
                             <div class="dropdown-divider"></div>
                             <a href="logout" class="dropdown-item">
-                                <i class="bi bi-box-arrow-right" style="font-size: 21px;"></i>  Log Out  
+                                <i class="bi bi-box-arrow-right" style="font-size: 21px;"></i>  Log Out
                             </a>
                         </div>
                     </li>
@@ -63,7 +64,7 @@
             </c:if>
 
 
-        </div> 
+        </div>
     </nav>
     <!-- /.navbar -->
 
@@ -90,7 +91,7 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-                            <!--Admin-->                
+                            <!--Admin-->
                             <c:set var="admin" value="admin"/>
                             <c:if test = "${sessionScope.useraccount.roleId == admin}">
                                 <li class="nav-item">
@@ -136,7 +137,7 @@
                                     </a>
                                 </li>
                             </c:if>
-                            <!--Admin-->  
+                            <!--Admin-->
                             <!--Author-->
                             <c:set var="Author" value="author"/>
                             <c:if test = "${sessionScope.useraccount.roleId == Author}">
@@ -224,7 +225,7 @@
                                     </a>
                                 </li>
                             </c:if>
-                            <!--Trainer--> 
+                            <!--Trainer-->
                         </ul>
                     </li>
 
