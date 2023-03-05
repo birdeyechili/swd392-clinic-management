@@ -2,12 +2,10 @@ package com.example.swd392_clinic_management.dal;
 
 import com.example.swd392_clinic_management.DTO.AppointmentDTO;
 import com.example.swd392_clinic_management.model.Appointment;
-import com.example.swd392_clinic_management.model.User;
 import com.example.swd392_clinic_management.util.DBUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,60 +13,6 @@ public class AppointmentDAO extends DBUtil {
     PreparedStatement ps;
     ResultSet rs;
     Connection connection = getConnection();
-
-    public List<Appointment> getAllAppointment() {
-        List<Appointment> list = new ArrayList<>();
-        String query = "select * from Appointment";
-        try {
-            ps = connection.prepareStatement(query);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                list.add(new Appointment(
-                        rs.getInt("AppointId"),
-                        rs.getInt("patientId"),
-                        rs.getInt("doctorId"),
-                        rs.getTimestamp("time"),
-                        rs.getString("note"),
-                        rs.getInt("status")
-                ));
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        return list;
-    }
-
-    public List<Appointment> getAppointmentByUserId(int userId) {
-        List<Appointment> list = new ArrayList<>();
-        String query = "select * from Appointment where patientId = ? or doctorId = ?";
-        try {
-            ps = connection.prepareStatement(query);
-            ps.setInt(1, userId);
-            ps.setInt(2, userId);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                list.add(new Appointment(
-                        rs.getInt("AppointId"),
-                        rs.getInt("patientId"),
-                        rs.getInt("doctorId"),
-                        rs.getTimestamp("time"),
-                        rs.getString("note"),
-                        rs.getInt("status")
-                ));
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        return list;
-    }
-
-    public List<Appointment> getAppointmentPaging(List<Appointment> list, int start, int end) {
-        List<Appointment> arr = new ArrayList<>();
-        for (int i = start; i < end; i++) {
-            arr.add(list.get(i));
-        }
-        return arr;
-    }
 
     public List<AppointmentDTO> getAppointmentDTOPaging(List<AppointmentDTO> list, int start, int end) {
         List<AppointmentDTO> arr = new ArrayList<>();
@@ -78,7 +22,7 @@ public class AppointmentDAO extends DBUtil {
         return arr;
     }
 
-    public List<AppointmentDTO> getAllAppointmentDTO() {
+    public List<AppointmentDTO> getAppointment() {
         List<AppointmentDTO> list = new ArrayList<>();
         String query = "select AppointId, u1.fullname as 'patientName', u2.fullname as 'doctorName', a.time, note, a.status from Appointment a\n" +
                 "join Users u1 on u1.userid = a.patientId\n" +
@@ -138,7 +82,7 @@ public class AppointmentDAO extends DBUtil {
                 ).collect(Collectors.toList());
     }
 
-    public AppointmentDTO getByAppointmentId(int appointmentId) {
+    public AppointmentDTO getAppointmentDetails(int appointmentId) {
         AppointmentDTO appointment = null;
         String query = "select AppointId, u1.fullname as 'patientName', u2.fullname as 'doctorName', u2.position, a.time, note, a.status from Appointment a\n" +
                 "join Users u1 on u1.userid = a.patientId\n" +

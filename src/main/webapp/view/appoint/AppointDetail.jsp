@@ -41,7 +41,7 @@
                         <form action="appointment?tag=update" method="post" id="form">
                             <div class="card-body">
                                 <div class="row">
-                                    <input name="id" value="${appointment.appointId}" name="id" hidden/>
+                                    <input name="id" value="${appointment.appointId}" hidden/>
                                     <div class="form-group col-md-4" \>
                                         <label>Patient</label>
                                         <input type="text" class="form-control" id="patient"

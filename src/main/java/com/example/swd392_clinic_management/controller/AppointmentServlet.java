@@ -45,7 +45,7 @@ public class AppointmentServlet extends HttpServlet {
         if (tag == null) {
             List<AppointmentDTO> appointments;
             if (loggedUser.getRole() == 0) { //admin
-                appointments = appointmentDAO.getAllAppointmentDTO();
+                appointments = appointmentDAO.getAppointment();
             } else {        //doctor or patient
                 appointments = appointmentDAO.getAppointmentDTOByUserId(loggedUser.getUserId());
             }
@@ -77,13 +77,13 @@ public class AppointmentServlet extends HttpServlet {
         else if (tag.equals("update")) {
             //Get appoint by id
             String id = request.getParameter("id");
-            AppointmentDTO appointment = appointmentDAO.getByAppointmentId(Integer.parseInt(id));
+            AppointmentDTO appointment = appointmentDAO.getAppointmentDetails(Integer.parseInt(id));
             request.setAttribute("appointment", appointment);
 
             //Get doctor list
             List<User> doctorList = userDAO.searchUser("", 2);
             request.setAttribute("doctorList", doctorList);
-            request.getRequestDispatcher("view/appoint/Detail.jsp").forward(request, response);
+            request.getRequestDispatcher("view/appoint/AppointDetail.jsp").forward(request, response);
         }
 
     }
@@ -104,14 +104,14 @@ public class AppointmentServlet extends HttpServlet {
             try {
                 time = formatter.parse(rawTime);
             } catch (ParseException e) {
-                AppointmentDTO appointment = appointmentDAO.getByAppointmentId(appointmentId);
+                AppointmentDTO appointment = appointmentDAO.getAppointmentDetails(appointmentId);
                 request.setAttribute("doctorId", doctorId);
                 request.setAttribute("appointment", appointment);
 
                 request.setAttribute("error", "Please input time in right format!");
                 List<User> doctorList = userDAO.searchUser("", 2);
                 request.setAttribute("doctorList", doctorList);
-                request.getRequestDispatcher("view/appoint/Detail.jsp").forward(request, response);
+                request.getRequestDispatcher("view/appoint/AppointDetail.jsp").forward(request, response);
                 return;
             }
             int status = Integer.parseInt(request.getParameter("status"));
