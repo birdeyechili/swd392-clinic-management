@@ -1,21 +1,19 @@
 package com.example.swd392_clinic_management.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import java.sql.Time;
+import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Appointment {
     private int appointId;
     private int patientId;
     private int doctorId;
-    private Time time;
+    private Date time;
     private String note;
-    private boolean status;
+    private int status;
 }
