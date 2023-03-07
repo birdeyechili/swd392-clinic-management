@@ -206,4 +206,26 @@ public class UserDAO extends DBUtil {
         }
         return user;
     }
+
+    public boolean editProfile(User user) {
+        String sql = "UPDATE Users SET " +
+                "fullname = ?," +
+                "age = ?," +
+                "email = ?" +
+                "WHERE userid = ?";
+
+        try {
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, user.getFullName());
+            ps.setInt(2, user.getAge());
+            ps.setString(3, user.getEmail());
+            ps.setInt(4, user.getUserId());
+            ps.executeUpdate();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
