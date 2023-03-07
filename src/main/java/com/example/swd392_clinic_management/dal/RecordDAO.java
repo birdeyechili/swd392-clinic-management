@@ -2,6 +2,7 @@ package com.example.swd392_clinic_management.dal;
 
 import com.example.swd392_clinic_management.model.PatientRecord;
 import com.example.swd392_clinic_management.util.DBUtil;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecordDAO extends DBUtil{
+public class RecordDAO extends DBUtil {
     PreparedStatement ps;
     ResultSet rs;
     Connection connection = getConnection();
@@ -61,5 +62,57 @@ public class RecordDAO extends DBUtil{
             arr.add(list.get(i));
         }
         return arr;
+    }
+
+    public void addNewRecord(PatientRecord record) {
+        String sql = "insert into [PatientRecord] values (?, ?, ?)";
+        try {
+            ps = connection.prepareStatement(sql);
+            ps.setInt(1, record.getPatientId());
+            ps.setString(2, record.getRecord());
+            ps.setBoolean(3, record.isStatus());
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public void updateRecord(PatientRecord patientRecord) {
+        String sql = "update PatientRecord set patientId=?, record=?, status=? where recordId=?";
+
+        try {
+            ps = connection.prepareStatement(sql);
+            ps.setInt(1, patientRecord.getPatientId());
+            ps.setString(2, patientRecord.getRecord());
+            ps.setBoolean(3, patientRecord.isStatus());
+            ps.setInt(4, patientRecord.getRecordId());
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public PatientRecord getRecordById(int id) {
+        PatientRecord record = null;
+        String query = "select * from PatientRecord where recordId=?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                record = new PatientRecord(
+                        rs.getInt("recordId"),
+                        rs.getInt("patientId"),
+                        rs.getString("record"),
+                        rs.getBoolean("status")
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return record;
     }
 }

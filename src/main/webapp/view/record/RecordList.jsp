@@ -68,7 +68,7 @@
                                             <td style="color: ${l.status==true?"green":"red"};">${record.status?"Active":"Inactive"}</td>
                                             <td>
                                                 <a class="btn btn-info btn-sm" style="margin-right:10%;"
-                                                   href="?id=${l.userId}&tag=update"><i
+                                                   href="?id=${record.recordId}&tag=update"><i
                                                         class="fas fa-pencil-alt"></i></a>
                                             </td>
                                         </tr>

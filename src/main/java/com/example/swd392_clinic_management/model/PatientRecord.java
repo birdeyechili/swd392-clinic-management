@@ -14,4 +14,10 @@ public class PatientRecord {
     private int patientId;
     private String record;
     private boolean status;
+
+    public PatientRecord(int patientId, String record, boolean status) {
+        this.patientId = patientId;
+        this.record = record;
+        this.status = status;
+    }
 }

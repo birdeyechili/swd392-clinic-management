@@ -40,20 +40,20 @@ public class RecordServlet extends HttpServlet {
         }
 
         //ACTION: add new record
-//        String tag = request.getParameter("tag");
-//        if (tag != null && tag.equals("add")){
-//            request.getRequestDispatcher("view/record/AddRecord.jsp").forward(request, response);
-//            return;
-//        }
+        String tag = request.getParameter("tag");
+        if (tag != null && tag.equals("add")) {
+            request.getRequestDispatcher("view/record/AddRecord.jsp").forward(request, response);
+            return;
+        }
         //ACTION: update user
         RecordDAO dao = new RecordDAO();
-//        if (tag != null && tag.equals("update")){
-//            String id = request.getParameter("id");
-//            User user = dao.getUserById(Integer.parseInt(id));
-//            request.setAttribute("user", user);
-//            request.getRequestDispatcher("view/user/UserDetail.jsp").forward(request, response);
-//            return;
-//        }
+        if (tag != null && tag.equals("update")) {
+            String id = request.getParameter("id");
+            PatientRecord patientRecord = dao.getRecordById(Integer.parseInt(id));
+            request.setAttribute("record", patientRecord);
+            request.getRequestDispatcher("view/record/UpdateRecord.jsp").forward(request, response);
+            return;
+        }
         //ACTION: view record list
         //1 Get data from db
         String searchInput = request.getParameter("searchInput");
@@ -75,7 +75,7 @@ public class RecordServlet extends HttpServlet {
         System.out.println("list: " + list);
 
         String rawPageNumber = request.getParameter("curPage");
-        PaginationUtil util = PaginationUtil.getStartAndEndIndex(list.size(), 2, rawPageNumber);
+        PaginationUtil util = PaginationUtil.getStartAndEndIndex(list.size(), 5, rawPageNumber);
         List<PatientRecord> listPaging = dao.getRecordPaging(list, util.getStart(), util.getEnd());
 
         //2 Set data to jsp
@@ -87,6 +87,41 @@ public class RecordServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
 
+        String recordID = request.getParameter("recordId");
+        String tag = request.getParameter("tag");
+        String patientId = request.getParameter("patientId");
+        String record = request.getParameter("record");
+        boolean status = request.getParameter("status").equals("1");
+
+        RecordDAO dao = new RecordDAO();
+
+        if (tag.equals("add")) {
+            HttpSession session = request.getSession();
+
+            if (!patientId.isEmpty()) {
+                PatientRecord patientRecord = new PatientRecord(Integer.parseInt(patientId), record, status);
+                dao.addNewRecord(patientRecord);
+                response.sendRedirect("recordservlet");
+            } else {
+                session.setAttribute("error", "Input patientID!");
+                response.sendRedirect("recordservlet?tag=add");
+            }
+
+        } else if (tag.equals("update")) {
+            HttpSession session = request.getSession();
+            session.removeAttribute("error");
+
+            if (!patientId.isEmpty()) {
+                PatientRecord patientRecord = new PatientRecord(Integer.parseInt(recordID), Integer.parseInt(patientId), record, status);
+                dao.updateRecord(patientRecord);
+                response.sendRedirect("recordservlet");
+            } else {
+                session.setAttribute("error", "Input patientID!");
+                response.sendRedirect("recordservlet?id="+recordID+"&tag=update");
+            }
+        }
     }
 }
