@@ -14,5 +14,6 @@ public class Config {
 
     private String [] listRole = {"admin", "patient", "doctor"};
     private String [] listAppointStatus = {"accept", "process", "deny", "finish"};
+    private String [] prescriptionStatus = {"Inactive","Active"};
 
 }
