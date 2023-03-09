@@ -25,7 +25,7 @@
                             <h2 class="card-title text-uppercase"><strong>Prescription List</strong></h2>
                         </div>
                         <div class="card-body">
-                            <form action="presciptionservlet" method="get">
+                            <form action="PrescriptionSearchServlet" method="get">
                                 <div class="row">
                                     <select id="searchCategory" name="searchCategory"
                                             class="form-control selectpicker col-2"
@@ -33,7 +33,7 @@
                                         <option value="id">Prescription ID</option>
                                     </select>
                                     <input type="text" style="margin-right: 3px;"
-                                           value="${searchInput}" placeholder="Type to search"
+                                           placeholder="Type to search"
                                            name="searchInput" size="30%"/>
                                     <button style="margin-right: 3px;" type="submit" class="btn btn-primary">Search
                                     </button>
@@ -57,19 +57,21 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <c:if test="${prescriptionList.size() != 0}">
-                                    <c:forEach items="${prescriptionList}" var="p">
+                                <c:if test="${list.size() != 0}">
+                                    <c:forEach items="${lisr}" var="p">
                                         <%--                                                <c:if test="${i.count == l.role}">--%>
                                         <tr class="text-center">
                                             <td>${p.presId}</td>
                                             <td>${p.appointId}</td>
                                             <td>${p.pres}</td>
                                             <td>${p.note}</td>
-                                            <td style="color: ${l.status==true?"green":"red"};">${record.status?"Active":"Inactive"}</td>
+                                            <jsp:useBean id="c" class="com.example.swd392_clinic_management.util.Config"/>
+                                            <c:set var="listStatus" value="${c.listAppointStatus}"/>
+                                            <td>${listStatus.get(p.status)}</td>
                                             <td>
                                                 <a class="btn btn-info btn-sm" style="margin-right:10%;"
-                                                   href="?id=${record.recordId}&tag=update"><i
-                                                        class="fas fa-pencil-alt"></i></a>
+                                                   href="${pageContext.getContextPath}"><i class="fas fa-pencil-alt"></i> &nbsp; Update
+                                                </a>
                                             </td>
                                         </tr>
                                     </c:forEach>

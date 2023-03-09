@@ -115,4 +115,17 @@ public class RecordDAO extends DBUtil {
         }
         return record;
     }
+
+    public boolean deleteRecord(int id) {
+        String query = "DELETE FROM PatientRecord WHERE recordId = ?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

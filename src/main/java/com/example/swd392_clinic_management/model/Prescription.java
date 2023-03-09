@@ -14,5 +14,5 @@ public class Prescription {
     private int appointId;
     private String pres;
     private String note;
-    private boolean status;
+    private int status;
 }
