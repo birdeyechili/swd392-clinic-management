@@ -9,32 +9,66 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
-public class PrescriptionDAO extends DBUtil {
-
-    PreparedStatement ps;
-    ResultSet rs;
-    Connection connection = getConnection();
-    public ArrayList<Prescription> getAllPrescription() {
-        ArrayList<Prescription> list = new ArrayList<>();
-        String sql = "SELECT * FROM Prescriptions";
-        try {
-            ps = connection.prepareStatement(sql);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                Prescription p = new Prescription();
-                p.setPresId(rs.getInt("presId"));
-                p.setAppointId(rs.getInt("AppointId"));
-                p.setNote(rs.getString("note"));
-                p.setPres(rs.getString("pres"));
-                p.setStatus(rs.getInt("status"));
-                list.add(p);
+public class PrescriptionDAO {
+    public Prescription getPrescriptionById(int presId) throws SQLException{
+        try(Connection connection = new DBUtil().getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT appointId,pres,note,status FROM Prescriptions WHERE presId = ?")){
+            preparedStatement.setInt(1,presId);
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                if(resultSet.next()){
+                    int appointId = resultSet.getInt("appointId");
+                    String pres = resultSet.getString("pres");
+                    String note = resultSet.getString("note");
+                    int status = resultSet.getInt("status");
+                    return new Prescription(presId,appointId,pres,note,status);
+                }else return null;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
         }
-        return list;
     }
 
+    public boolean addPrescription(Prescription prescription) throws SQLException{
+        try(Connection connection = new DBUtil().getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Prescriptions (appointId,pres,note,status)" +
+                    "VALUES (?,?,?,?)");){
+            preparedStatement.setInt(1,prescription.getAppointId());
+            preparedStatement.setString(2,prescription.getPres());
+            preparedStatement.setString(3,prescription.getNote());
+            preparedStatement.setInt(4,prescription.getStatus());
+            return preparedStatement.executeUpdate()>0;
+        }
+    }
+
+    public boolean updatePrescription(Prescription prescription) throws SQLException{
+        try(Connection connection = new DBUtil().getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Prescriptions SET " +
+                    "appointId=?,pres=?,note=?,status=? " +
+                    "WHERE presId = ?");){
+            preparedStatement.setInt(1,prescription.getAppointId());
+            preparedStatement.setString(2,prescription.getPres());
+            preparedStatement.setString(3,prescription.getNote());
+            preparedStatement.setInt(4,prescription.getStatus());
+            preparedStatement.setInt(5,prescription.getPresId());
+            return preparedStatement.executeUpdate()>0;
+        }
+    }
+
+    public List<Prescription> getAllPrescriptions() throws SQLException {
+        try(Connection connection = new DBUtil().getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT presId,appointId,pres,note,status FROM Prescriptions")){
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                List<Prescription> prescriptionList = new ArrayList<>();
+                while (resultSet.next()){
+                    int presId = resultSet.getInt("presId");
+                    int appointId = resultSet.getInt("appointId");
+                    String pres = resultSet.getString("pres");
+                    String note = resultSet.getString("note");
+                    int status = resultSet.getInt("status");
+                    prescriptionList.add(new Prescription(presId,appointId,pres,note,status));
+                }
+                return prescriptionList;
+            }
+        }
+    }
 }
