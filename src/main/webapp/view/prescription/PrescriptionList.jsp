@@ -14,6 +14,7 @@
 </head>
 <body class="layout-top-nav sidebar-closed sidebar-collapse">
 <%@include file="../home/Header.jsp" %>
+
 <div class="content-wrapper">
     <!-- jQuery -->
     <section class="content">
@@ -25,22 +26,20 @@
                             <h2 class="card-title text-uppercase"><strong>Prescription List</strong></h2>
                         </div>
                         <div class="card-body">
-                            <form action="PrescriptionSearchServlet" method="get">
+                            <form action="PrescriptionListServlet" method="POST">
                                 <div class="row">
                                     <select id="searchCategory" name="searchCategory"
                                             class="form-control selectpicker col-2"
                                             style="height: 40px; margin-right: 3px;">
                                         <option value="id">Prescription ID</option>
                                     </select>
-                                    <input type="text" style="margin-right: 3px;"
+                                    <input type="number" step="1" style="margin-right: 3px;"
                                            placeholder="Type to search"
                                            name="searchInput" size="30%"/>
-                                    <button style="margin-right: 3px;" type="submit" class="btn btn-primary">Search
-                                    </button>
-                                    <button style="height: 40px;" type="reset" class="btn btn-default">Reset
-                                    </button>
+                                    <button style="margin-right: 3px;" type="submit" class="btn btn-primary">Search</button>
+                                    <button style="height: 40px;" type="reset" class="btn btn-default">Reset</button>
 
-                                    <a href="addprescription" style="margin-left: 200px; padding-top: 5px;"><i
+                                    <a href="createprescription" style="margin-left: 200px; padding-top: 5px;"><i
                                             class="fa fa-plus"></i> Add new</a>
                                 </div>
                             </form>
@@ -53,24 +52,41 @@
                                     <th>Prescription</th>
                                     <th>Note</th>
                                     <th>Status</th>
-                                    <th style="width: 130px;">Action</th>
+                                    <th style="width: fit-content">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <c:if test="${list.size() != 0}">
-                                    <c:forEach items="${lisr}" var="p">
-                                        <%--                                                <c:if test="${i.count == l.role}">--%>
+                                <c:if test="${presList.size() == 0}">
+                                    <tr>
+                                        <td colspan="6">
+                                            <h1 style="color:red; font-size: 40px; text-align: center">No result! Try adding something first.</h1>
+                                        </td>
+                                    </tr>
+                                </c:if>
+                                <c:if test="${presList.size() != 0}">
+                                    <c:forEach items="${presList}" var="p">
                                         <tr class="text-center">
                                             <td>${p.presId}</td>
                                             <td>${p.appointId}</td>
                                             <td>${p.pres}</td>
                                             <td>${p.note}</td>
-                                            <jsp:useBean id="c" class="com.example.swd392_clinic_management.util.Config"/>
-                                            <c:set var="listStatus" value="${c.listAppointStatus}"/>
-                                            <td>${listStatus.get(p.status)}</td>
+                                            <jsp:useBean id="c"
+                                                         class="com.example.swd392_clinic_management.util.Config"/>
+                                            <c:set var="listStatus" value="${c.prescriptionStatus}"/>
+                                            <c:forEach items="${listStatus}" var="s" begin="0" varStatus="i">
+                                                <c:if test="${(i.count - 1) == p.status}">
+                                                    <td>${s}</td>
+                                                </c:if>
+                                            </c:forEach>
                                             <td>
-                                                <a class="btn btn-info btn-sm" style="margin-right:10%;"
-                                                   href="${pageContext.getContextPath}"><i class="fas fa-pencil-alt"></i> &nbsp; Update
+                                                <a class="btn btn-info btn-sm"
+                                                   href="${pageContext.request.contextPath}/updateprescription?presId=${p.presId}"><i
+                                                        class="fas fa-pencil-alt"></i> &nbsp; Update
+                                                </a>
+                                                <a class="btn btn-danger btn-sm"
+                                                   onclick="return confirm('Delete this Item!?')"
+                                                   href="${pageContext.request.contextPath}/PrescriptionDeleteServlet?id=${p.presId}"><i
+                                                        class="fa-solid fa-trash-can"></i> &nbsp; Delete
                                                 </a>
                                             </td>
                                         </tr>
@@ -142,7 +158,6 @@
                         </c:if>
                     </li>
                 </c:if>
-                </li>
             </ul>
         </nav>
     </c:if>
@@ -151,7 +166,14 @@
 
 
 <%@include file="../home/Footer.jsp" %>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+      integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"/>
 </body>
+<script>
+    let message = "${param.message}";
+    if(message!=="") alert(message);
+</script>
 <script>
     $(document).ready(function () {
         $("#form").validate({

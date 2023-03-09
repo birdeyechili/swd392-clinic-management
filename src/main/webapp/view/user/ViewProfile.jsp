@@ -19,6 +19,10 @@
     <%@include file="../home/HeaderLink.jsp" %>
 </head>
 <body class="layout-top-nav sidebar-closed sidebar-collapse">
+<script>
+    let message = "${param.message}";
+    if(message!=="") alert(message);
+</script>
 <%@include file="../home/Header.jsp" %>
 <div class="content-wrapper">
     <section class="content-header">
@@ -34,7 +38,7 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-10">
+                <div class="col-md-6">
                     <div class="card card-primary">
                         <span style="color: red">${sessionScope.error}</span>
                         <form action="UserProfileServlet" method="post" id="form">
@@ -43,7 +47,7 @@
                                     <input value="${user.userId}" name="userId" hidden/>
                                 </div>
                                 <div class="row">
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-12">
                                         <label>Name</label>
                                         <input readonly type="text" class="form-control" id="name"
                                                placeholder="Enter you full name" value="${user.fullName}"
@@ -51,7 +55,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-12">
                                         <label>Email</label>
                                         <input readonly class="form-control" id="email"
                                                placeholder="Enter your email address" value="${user.email}"
@@ -59,7 +63,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-12">
                                         <label>Age</label>
                                         <input readonly class="form-control" id="age"
                                                placeholder="Enter your age" type="number" min="1" max="120" step="1"
@@ -68,11 +72,13 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <a class="btn btn-success" href="${pageContext.request.contextPath}/#">
+                                    <div class="col-md-12">
+                                        <a class="btn btn-success"
+                                           onclick="history.back();">
                                             <i class="fa-solid fa-backward"></i> &nbsp; Back
                                         </a>
-                                        <a class="btn btn-primary" href="${pageContext.request.contextPath}/UserProfileEditServlet">
+                                        <a class="btn btn-primary"
+                                           href="${pageContext.request.contextPath}/UserProfileEditServlet?id=${user.userId}">
                                             <i class="fa-solid fa-pen-to-square"></i> &nbsp; Edit
                                         </a>
                                     </div>

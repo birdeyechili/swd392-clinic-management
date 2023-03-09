@@ -65,10 +65,18 @@ public class PrescriptionDAO {
                     String pres = resultSet.getString("pres");
                     String note = resultSet.getString("note");
                     int status = resultSet.getInt("status");
-                    prescriptionList.add(new Prescription(presId,appointId,pres,note,status));
+                    prescriptionList.add(new Prescription(presId, appointId, pres, note, status));
                 }
                 return prescriptionList;
             }
+        }
+    }
+
+    public boolean deletePrescription(int id) throws SQLException{
+        try(Connection connection = new DBUtil().getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM Prescriptions WHERE presId = ?");){
+            preparedStatement.setInt(1,id);
+            return preparedStatement.executeUpdate() > 0;
         }
     }
 }

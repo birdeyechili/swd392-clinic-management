@@ -208,11 +208,12 @@ public class UserDAO extends DBUtil {
     }
 
     public boolean editProfile(User user) {
-        String sql = "UPDATE Users SET " +
-                "fullname = ?," +
-                "age = ?," +
-                "email = ?" +
-                "WHERE userid = ?";
+        String sql = "UPDATE [Users]\n" +
+                "   SET      \n" +
+                "       [fullname] = ?\n" +
+                "      ,[age] = ?\n" +
+                "      ,[email] = ?\n" +
+                " WHERE userid = ?";
 
         try {
             ps = connection.prepareStatement(sql);

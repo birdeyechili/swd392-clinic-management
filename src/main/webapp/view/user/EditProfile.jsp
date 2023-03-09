@@ -34,16 +34,16 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-10">
+                <div class="col-md-6"  style="margin: 0 auto;">
                     <div class="card card-primary">
                         <span style="color: red">${sessionScope.error}</span>
-                        <form action="UserProfileServlet" method="post" id="form">
+                        <form action="UserProfileEditServlet" method="post" id="form">
                             <div class="card-body">
                                 <div class="row">
                                     <input value="${user.userId}" name="userId" hidden/>
                                 </div>
                                 <div class="row">
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-12">
                                         <label>Name</label>
                                         <input required type="text" class="form-control" id="name"
                                                placeholder="Enter you full name" value="${user.fullName}"
@@ -51,7 +51,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-12">
                                         <label>Email</label>
                                         <input required class="form-control" id="email"
                                                placeholder="Enter your email address" value="${user.email}"
@@ -59,7 +59,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-12">
                                         <label>Age</label>
                                         <input required class="form-control" id="age"
                                                placeholder="Enter your age" type="number" min="1" max="120" step="1"
@@ -67,11 +67,13 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <button class="btn btn-warning" type="reset">
                                             <i class="fa-solid fa-rotate-left"></i> &nbsp; Reset
                                         </button>
-                                        <button class="btn btn-success" type="submit">
+                                        <button class="btn btn-success"
+                                                onclick="return confirm('Save change!?')"
+                                                type="submit">
                                             <i class="fa-solid fa-circle-check"></i> &nbsp; Update
                                         </button>
                                     </div>
@@ -86,10 +88,9 @@
 </div>
 
 <%@include file="../home/Footer.jsp" %>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.js"></script>
-
+<script>
+    let message = "${param.message}";
+    if(message!=="") alert(message);
+</script>
 </body>
 </html>

@@ -63,5 +63,9 @@
 
 
 </body>
+<script>
+    let message = "${param.message}";
+    if(message!=="") alert(message);
+</script>
 </html>
 

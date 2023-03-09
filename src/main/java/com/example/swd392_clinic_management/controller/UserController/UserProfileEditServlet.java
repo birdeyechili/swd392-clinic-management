@@ -16,7 +16,7 @@ public class UserProfileEditServlet extends HttpServlet {
         if (user != null) {
             request.getRequestDispatcher("view/user/EditProfile.jsp").forward(request, response);
         } else {
-            response.sendRedirect("home");
+            response.sendRedirect("authentication");
         }
     }
 
@@ -24,7 +24,7 @@ public class UserProfileEditServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
 
-        if (request.getParameter("fullname") != null) {
+        if (request.getParameter("fullName") != null) {
             String fullName = request.getParameter("fullName");
             user.setFullName(fullName);
         }
@@ -43,9 +43,9 @@ public class UserProfileEditServlet extends HttpServlet {
         boolean check = userDBC.editProfile(user);
         log("Edit profile: " + check);
         if (check) {
-            // do shit
+            response.sendRedirect("UserProfileViewServlet?id=" + user.getUserId() + "?message=Changed saved successfully.");
         } else {
-            // do other shit
+            response.sendRedirect("UserProfileViewServlet?id=" + user.getUserId() + "?message=Invalid credentials! Check again.");
         }
     }
 }
