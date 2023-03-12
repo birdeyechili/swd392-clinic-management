@@ -55,7 +55,7 @@
                                     <th style="width: fit-content">Action</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="tbody">
                                 <c:if test="${presList.size() == 0}">
                                     <tr>
                                         <td colspan="6">
@@ -174,29 +174,76 @@
     let message = "${param.message}";
     if(message!=="") alert(message);
 </script>
+<script src="${pageContext.request.contextPath}/js/paginathing.js"></script>
 <script>
-    $(document).ready(function () {
-        $("#form").validate({
-            onfocusout: false,
-            onkeyup: false,
-            onclick: false,
-            highlight: function (element) {
-                $(element).addClass('has-error');
-            },
-            unhighlight: function (element) {
-                $(element).removeClass('has-error');
-            },
-            onfocusout: function (element) {
-                this.element(element); // triggers validation
-            },
-            onkeyup: function (element, event) {
-                if ($(element).hasClass('valid')) {
-                    $(element).next().remove();
-                }
-                this.element(element); // triggers validation
-            },
-        });
+    $('#tbody').paginathing({
+        perPage: 5,
+        limitPagination: false,
+        prevNext: true,
+        firstLast: true,
+        prevText: '&laquo;',
+        nextText: '&raquo;',
+        firstText: 'First',
+        lastText: 'Last',
+        containerClass: 'pagination-container',
+        ulClass: 'pagination',
+        liClass: 'page-item',
+        activeClass: 'active',
+        disabledClass: 'disabled',
+        pageNumbers: false,
+        insertAfter: ".table"
     });
 </script>
+<style>
+    .pagination-container {
+        text-align: center;
+        padding: 20px 0;
+    }
+
+    .pagination {
+        width: fit-content;
+        margin: 0 auto;
+    }
+
+    .pagination a {
+        color: black;
+        text-decoration: none;
+    }
+
+    .pagination li {
+        color: white;
+        padding: 0.2rem 0.8rem;
+        text-decoration: none;
+        border: 1px solid #ddd;
+    }
+
+    .pagination .active {
+        background-color: #337ab7;
+        border: 1px solid #337ab7;
+    }
+
+    .active a {
+        color: white;
+    }
+
+    .disabled a {
+        color: darkgrey;
+    }
+
+    .pagination li:hover:not(.active) {
+        background-color: #ddd;
+    }
+
+    .pagination li:first-child {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+    }
+
+    .pagination li:last-child {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+
+</style>
 </html>
 
