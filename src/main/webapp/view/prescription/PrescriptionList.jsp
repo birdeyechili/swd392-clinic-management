@@ -26,7 +26,7 @@
                             <h2 class="card-title text-uppercase"><strong>Prescription List</strong></h2>
                         </div>
                         <div class="card-body">
-                            <form action="PrescriptionListServlet" method="POST">
+                            <form action="prescriptionList" method="POST">
                                 <div class="row">
                                     <select id="searchCategory" name="searchCategory"
                                             class="form-control selectpicker col-2"
@@ -142,19 +142,19 @@
                     <li class="page-item">
                         <a class="page-link"
                         <c:if test="${searchInput != null}">
-                           href="recordservlet?curPage=${curPage + 1}&searchInput=${searchInput}">Next</a>
+                           href="prescriptionList?curPage=${curPage + 1}&searchInput=${searchInput}">Next</a>
                         </c:if>
                         <c:if test="${searchInput == null}">
-                            href="recordservlet?curPage=${curPage + 1}">Next</a>
+                            href="prescriptionList?curPage=${curPage + 1}">Next</a>
                         </c:if>
                     </li>
                     <li class="page-item">
                         <a class="page-link"
                         <c:if test="${searchInput != null}">
-                           href="recordservlet?curPage=${NoPage}&searchInput=${searchInput}">End</a>
+                           href="prescriptionList?curPage=${NoPage}&searchInput=${searchInput}">End</a>
                         </c:if>
                         <c:if test="${searchInput == null}">
-                            href="recordservlet?curPage=${NoPage}">End</a>
+                            href="prescriptionList?curPage=${NoPage}">End</a>
                         </c:if>
                     </li>
                 </c:if>

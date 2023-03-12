@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "PrescriptionListServlet", value = "/PrescriptionListServlet")
+@WebServlet(name = "PrescriptionListServlet", value = "/prescriptionList")
 public class PrescriptionListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

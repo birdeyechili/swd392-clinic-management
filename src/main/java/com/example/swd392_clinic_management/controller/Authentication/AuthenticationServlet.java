@@ -29,7 +29,7 @@ public class AuthenticationServlet extends HttpServlet {
             User user = userDAO.login(account, password);
             if(user != null){
                 request.getSession().setAttribute("user", user);
-                request.getRequestDispatcher("view/home/Home.jsp").forward(request, response);
+                response.sendRedirect("home");
             }else{
                 request.getRequestDispatcher("view/Authentication/Login.jsp").forward(request, response);
             }

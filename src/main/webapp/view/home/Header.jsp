@@ -10,8 +10,7 @@
             </a>
             <!-- Left navbar links -->
             <ul class="navbar-nav">
-                <c:set var="student" value="student"/>
-                <c:if test = "${sessionScope.useraccount != null}">
+                <c:if test = "${sessionScope.user != null}">
                     <li class="nav-item">
                         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                     </li>
@@ -21,7 +20,7 @@
                 </li>
             </ul>
 
-            <c:if test = "${sessionScope.useraccount == null}">
+            <c:if test = "${sessionScope.user == null}">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item" style="padding-right: 10px;">
 <%--                        <a href="login" ><button type="button" class="btn btn-block btn-light" >Login</button></a>--%>
@@ -32,30 +31,23 @@
                     </li>
                 </ul>
             </c:if>
-            <c:if test = "${sessionScope.useraccount != null}">
+            <c:if test = "${sessionScope.user != null}">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item dropdown show" style="padding-right: 10px;">
-                        <a href="#" class="d-block nav-link" data-toggle="dropdown" aria-expanded="true" style="padding-top: 5px;font-size: 20px; padding-right: 10px;color: #212529">${sessionScope.useraccount.fullName}
-
-                            <c:if test = "${sessionScope.useraccount.avatarLink == null}">
-                                <img src="<%=request.getContextPath()%>/home/pages/comment.png" alt="User Image" style="height: 40px; width: 40px; border-radius: 25%">
-                            </c:if>
-                            <c:if test = "${sessionScope.useraccount.avatarLink != null}">
-                                <img src="<%=request.getContextPath()%>/img/${sessionScope.useraccount.avatarLink}" alt="User Image" style="height: 40px; width: 40px; border-radius: 25%">
-                            </c:if>
+                        <a href="#" class="d-block nav-link" data-toggle="dropdown" aria-expanded="true" style="padding-top: 5px;font-size: 20px; padding-right: 10px;color: #212529">${sessionScope.user.fullName}
                         </a>
                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
                             <span class="dropdown-item dropdown-header">User features</span>
                             <div class="dropdown-divider"></div>
-                            <a href="userprofile" class="dropdown-item">
+                            <a href="UserProfileViewServlet" class="dropdown-item">
                                 <i class="bi bi-file-person-fill" style="font-size: 21px;"></i> User Profile
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a href="changepassword" class="dropdown-item">
+                            <a href="UserPasswordServlet" class="dropdown-item">
                                 <i class="bi bi-file-earmark-lock2-fill" style="font-size: 21px;"></i> Change Password
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a href="logout" class="dropdown-item">
+                            <a href="LogOutServlet" class="dropdown-item">
                                 <i class="bi bi-box-arrow-right" style="font-size: 21px;"></i>  Log Out
                             </a>
                         </div>
@@ -92,12 +84,17 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <!--Admin-->
-                            <c:set var="admin" value="admin"/>
-                            <c:if test = "${sessionScope.useraccount.roleId == admin}">
+                            <c:if test = "${sessionScope.user.role == 0}">
                                 <li class="nav-item">
-                                    <a href="setting" class="nav-link">
+                                    <a href="appointment" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p> System Settings </p>
+                                        <p> Appointment List </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="recordservlet" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p> Record List </p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -107,125 +104,75 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="subject" class="nav-link">
+                                    <a href="request" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p> Subject List </p>
+                                        <p> Request Appointment </p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="subjectsetting" class="nav-link">
+                                    <a href="prescriptionList" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p> Subject Setting </p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="iterationlist" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p> Iteration List </p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="class" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p> Class List </p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="evalcriteria" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p> Criteria List </p>
+                                        <p> Prescription List </p>
                                     </a>
                                 </li>
                             </c:if>
                             <!--Admin-->
-                            <!--Author-->
-                            <c:set var="Author" value="author"/>
-                            <c:if test = "${sessionScope.useraccount.roleId == Author}">
+                            <!--Doctor-->
+                            <c:if test = "${sessionScope.user.role == 2}">
                                 <li class="nav-item">
-                                    <a href="subjectsetting" class="nav-link">
+                                    <a href="appointment" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p> Subject Setting </p>
+                                        <p> Appointment List </p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="iterationlist" class="nav-link">
+                                    <a href="recordservlet" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p> Iteration List </p>
+                                        <p> Record List </p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="class" class="nav-link">
+                                    <a href="request" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p> Class List </p>
+                                        <p> Request Appointment </p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="evalcriteria" class="nav-link">
+                                    <a href="prescriptionList" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p> Criteria List </p>
-                                    </a>
-                                </li>
-                            </c:if>
-                            <!--Author-->
-                            <!--Trainer-->
-                            <c:set var="Trainer" value="trainer"/>
-                            <c:if test = "${sessionScope.useraccount.roleId == Trainer}">
-                                <li class="nav-item">
-                                    <a href="class" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p> Class List </p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="classuser" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p> Class User List </p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="team" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p> Team List </p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="milestone" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p> Milestone List </p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="featurelist" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p> Feature List </p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="function" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p> Function List </p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="issue" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p> Issue </p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="teameval" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p> Team Evaluation </p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="usereval" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p> User Evaluation </p>
+                                        <p> Prescription List </p>
                                     </a>
                                 </li>
                             </c:if>
-                            <!--Trainer-->
+                            <!--Doctor-->
+                            <!--Patient-->
+                            <c:if test = "${sessionScope.user.role == 1}">
+                                <li class="nav-item">
+                                    <a href="appointment" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p> Appointment List </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="recordservlet" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p> Record List </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="request" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p> Request Appointment </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="prescriptionList" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p> Prescription List </p>
+                                    </a>
+                                </li>
+                            </c:if>
+                            <!--Patient-->
                         </ul>
                     </li>
 

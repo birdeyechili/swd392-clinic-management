@@ -16,7 +16,7 @@ import java.time.format.DateTimeParseException;
 public class RegisterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("view/user/AddNew.jsp").forward(request,response);
+        request.getRequestDispatcher("view/user/Registration.jsp").forward(request,response);
     }
 
     @Override

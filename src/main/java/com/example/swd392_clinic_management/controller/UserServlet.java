@@ -21,20 +21,16 @@ public class UserServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
 
         //TODO: Check only admin can access
-        //Fake user
-        HttpSession session = request.getSession();
-        User fakeUser = new User(1, "a", "1", "kien", 12, "kien@", 0, "ad", true);
-        session.setAttribute("loggedUser", fakeUser);
+        User loggedUser = (User) request.getSession().getAttribute("user");
 
-        User loggedUser = (User) session.getAttribute("loggedUser");
         if (loggedUser == null) {
-            request.setAttribute("error", "You must log in to access!");
-            request.getRequestDispatcher("Login.jsp").forward(request, response);
+            request.setAttribute("error", "You must log in as admin to access!");
+            request.getRequestDispatcher("/authentication").forward(request, response);
             return;
         }
         if (loggedUser.getRole() != 0) {    //not admin -> not allow
             request.setAttribute("error", "You must log in as admin to access!");
-            request.getRequestDispatcher("Login.jsp").forward(request, response);
+            request.getRequestDispatcher("/authentication").forward(request, response);
             return;
         }
 

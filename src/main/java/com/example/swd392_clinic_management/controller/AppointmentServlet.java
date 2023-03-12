@@ -25,17 +25,11 @@ public class AppointmentServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
+        User loggedUser = (User) request.getSession().getAttribute("user");
 
-        //Fake user
-        HttpSession session = request.getSession();
-        User fakeUser = new User(13, "a", "1", "Mai", 12, "kien@", 1, "Benh nhan", true);
-        session.setAttribute("loggedUser", fakeUser);
-
-        // Check loggedUser
-        User loggedUser = (User) session.getAttribute("loggedUser");
         if (loggedUser == null) {
-            request.setAttribute("error", "You must log in to access!");
-            request.getRequestDispatcher("Login.jsp").forward(request, response);
+            request.setAttribute("error", "You must log in as admin to access!");
+            request.getRequestDispatcher("/authentication").forward(request, response);
             return;
         }
 

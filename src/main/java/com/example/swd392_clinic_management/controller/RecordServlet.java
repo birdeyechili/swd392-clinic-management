@@ -22,12 +22,7 @@ public class RecordServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
 
         //TODO: Check only admin can access
-//        //Fake user
-        HttpSession session = request.getSession();
-        User fakeUser = new User(1, "a", "1", "kien", 12, "kien@", 0, "ad", true);
-        session.setAttribute("user", fakeUser);
-
-        User loggedUser = (User) session.getAttribute("user");
+        User loggedUser = (User) request.getSession().getAttribute("user");
         if (loggedUser == null) {
             request.setAttribute("error", "You must log in to access!");
             request.getRequestDispatcher("/authentication").forward(request, response);
