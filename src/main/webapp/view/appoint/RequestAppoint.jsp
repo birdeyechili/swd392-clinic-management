@@ -41,7 +41,7 @@
                         <form action="request" method="post" id="form">
                             <div class="card-body">
                                 <div class="row">
-                                    <input value="${sessionScope.loggedUser.userId}" name="patientId" hidden/>
+                                    <input value="${sessionScope.user.userId}" name="patientId" hidden/>
                                     <div class="form-group col-md-8">
                                         <label>Doctor</label>
                                         <select class="form-control selectpicker" id="roleId" name="doctorId"
